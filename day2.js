@@ -44,3 +44,27 @@ const games = lines.map((line) => {
 const wins = games.filter((game) => play(game));
 const score = wins.reduce((res, game) => res + game.id, 0);
 console.log("Score:", score);
+
+const powers = games.map((game) => {
+  const fewest = game.sets.reduce(
+    (prev, set) => {
+      const current = prev;
+      for (const [key, value] of Object.entries(set)) {
+        if (value > current[key]) {
+          current[key] = value;
+        }
+      }
+      return current;
+    },
+    {
+      red: 0,
+      green: 0,
+      blue: 0,
+    }
+  );
+  const power = fewest.red * fewest.blue * fewest.green;
+  return power;
+});
+
+const score2 = powers.reduce((res, power) => res + power, 0);
+console.log("Score2:", score2);
