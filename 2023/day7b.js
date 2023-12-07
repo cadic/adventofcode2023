@@ -30,6 +30,7 @@ const compareTypeNames = (a, b) => {
   const bi = Object.keys(types).indexOf(b);
   return ai - bi;
 };
+
 const compareTypes = (a, b) => {
   const ai = Object.values(types).indexOf(a);
   const bi = Object.values(types).indexOf(b);
