@@ -63,11 +63,7 @@ const detectType = (cards) => {
     counts[card] = counts[card] ? counts[card] + 1 : 1;
   }
   const set = Object.values(counts).sort((a, b) => b - a);
-  const type = Object.keys(types).find((key) => {
-    const value = types[key];
-    return arrayEquals(value, set);
-  });
-
+  const type = Object.keys(types).find((key) => arrayEquals(types[key], set));
   return type;
 };
 
@@ -86,7 +82,6 @@ const detectTypeWithJokers = (cards) => {
       }
     }
   }
-
   return type;
 };
 
@@ -100,21 +95,15 @@ const hands = fs
       bid: parseInt(chunks[1]),
     };
   })
-  .map((hand) => {
-    const type = detectTypeWithJokers(hand.cards);
-    return {
-      cards: hand.cards,
-      bid: hand.bid,
-      type: type,
-    };
-  })
+  .map((hand) => ({
+    ...hand,
+    type: detectTypeWithJokers(hand.cards),
+  }))
   .sort(compareHands)
   .reverse()
   .map((hand, index) => {
     return {
-      cards: hand.cards.join(""),
-      bid: hand.bid,
-      type: hand.type,
+      ...hand,
       rank: index + 1,
     };
   });
