@@ -294,8 +294,23 @@ const applyMap = (seed, map) => {
   }, seed);
 };
 
-const locations = seeds
-  .map((seed) => maps.reduce((oldSeed, map) => applyMap(oldSeed, map), seed))
-  .sort((a, b) => a - b);
+let ranges = [];
+for (let i = 0; i < seeds.length; i += 2) {
+  ranges.push([seeds[i], seeds[i + 1]]);
+}
 
-console.log("Part 1", Math.min(...locations));
+const locations = ranges.map((range) => {
+  const start = range[0];
+  const end = start + range[1] - 1;
+  const values = [];
+  for (let i = start; i <= end; i++) {
+    values.push(i);
+  }
+  values.sort(
+    (a, b) =>
+      maps.reduce((oldSeed, map) => applyMap(oldSeed, map), a) -
+      maps.reduce((oldSeed, map) => applyMap(oldSeed, map), b)
+  );
+  console.log(values);
+});
+console.log(locations);
