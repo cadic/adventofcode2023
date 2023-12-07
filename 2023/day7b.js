@@ -56,16 +56,6 @@ const compareHands = (a, b) => {
   return 0;
 };
 
-Array.prototype.multiIndexOf = function (el) {
-  var idxs = [];
-  for (var i = this.length - 1; i >= 0; i--) {
-    if (this[i] === el) {
-      idxs.unshift(i);
-    }
-  }
-  return idxs;
-};
-
 const detectType = (cards) => {
   const counts = {};
   for (const card of cards) {
@@ -128,7 +118,7 @@ const hands = fs
     };
   });
 
-const score1 = hands.reduce((prev, hand) => {
+const score2 = hands.reduce((prev, hand) => {
   return prev + hand.bid * hand.rank;
 }, 0);
-console.log("Score2:", score1);
+console.log("Score2:", score2);
