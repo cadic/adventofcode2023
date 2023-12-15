@@ -1,6 +1,6 @@
 const fs = require("fs");
 let rocks = fs
-  .readFileSync("day14e.txt", { encoding: "utf-8" })
+  .readFileSync("day14.txt", { encoding: "utf-8" })
   .split("\n")
   .map((l) => l.split(""));
 
@@ -38,3 +38,22 @@ const score1 = result.reduce(
   0
 );
 console.log("Part 1", score1);
+
+const scores = [];
+let matrix = rocks;
+for (let i = 0; i < 1000000000; i++) {
+  matrix = rotate2(matrix);
+  for (let j = 0; j < 4; j++) {
+    matrix = matrix.map((line) => tilt(line));
+    matrix = rotate(matrix);
+  }
+  matrix = rotate(matrix);
+  const score = matrix.reduce(
+    (p, v, i) => p + v.filter((a) => a === "O").length * (result.length - i),
+    0
+  );
+  if (i % 1000 === 0 || i === 999999999) {
+    console.log(i + 1, score);
+  }
+  //scores.push(score);
+}
