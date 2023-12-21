@@ -1,5 +1,5 @@
 const fs = require("fs");
-const lines = fs.readFileSync("day5.txt", { encoding: "utf-8" }).split("\n");
+const lines = fs.readFileSync("day5.txt").split("\n");
 
 const vowels = ["a", "e", "i", "o", "u"];
 const forbidden = ["ab", "cd", "pq", "xy"];
