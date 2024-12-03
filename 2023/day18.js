@@ -53,25 +53,38 @@ for (let i = minY; i <= maxY; i++) {
 }
 
 const paint = () => {
-  for (let i = 0; i < finalField.length; i++) {
-    let current = ".",
-      prev = ".",
-      open = false;
-    for (let ii = 0; ii < finalField[i].length; ii++) {
-      current = finalField[i][ii];
-      if (current === "#" && prev === "." && !open) {
-        open = true;
-      } else if (current === "." && prev === "#" && open) {
-        open = false;
+  // search for first point.
+  let toPaint = [];
+  for (let i = 1; i < finalField[1].length; i++) {
+    if (finalField[1][i - 1] === "#" && finalField[1][i] === ".") {
+      toPaint.push([1, i]);
+      break;
+    }
+  }
+  while (toPaint.length > 0) {
+    const [x, y] = toPaint.pop();
+    if (finalField[x][y] === ".") {
+      finalField[x][y] = "#";
+      if (finalField[x - 1][y] && finalField[x - 1][y] === ".") {
+        toPaint.push([x - 1, y]);
       }
-      if (open) {
-        finalField[i][ii] = "#";
+      if (finalField[x + 1][y] && finalField[x + 1][y] === ".") {
+        toPaint.push([x + 1, y]);
       }
-      prev = current;
+      if (finalField[x][y - 1] && finalField[x][y - 1] === ".") {
+        toPaint.push([x, y - 1]);
+      }
+      if (finalField[x][y + 1] && finalField[x][y + 1] === ".") {
+        toPaint.push([x, y + 1]);
+      }
     }
   }
 };
 
 paint();
 
-console.log(finalField.map((r) => r.join("")).join("\n"));
+const score1 = finalField.reduce(
+  (p, row) => p + row.reduce((r, v) => r + (v === "#" ? 1 : 0), 0),
+  0
+);
+console.log(score1);

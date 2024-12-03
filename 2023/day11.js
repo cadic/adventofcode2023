@@ -46,7 +46,7 @@ const distance2 = (g1, g2) => {
     const element = universe[x2][i];
     distance += element === "M" ? 10 : 1;
   }
-  console.log(`Distance ${g1 + 1},${g2 + 1}: ${distance}`);
+  console.log(`Distance G${g1 + 1}(${galaxies[g1][0]}x${galaxies[g1][1]}) - G${g2 + 1}(${galaxies[g2][0]}x${galaxies[g2][1]}): ${distance}`);
   return distance;
 };
 
@@ -96,14 +96,14 @@ for (let i = 0; i < galaxies.length; i++) {
   for (let j = 0; j < galaxies.length; j++) {
     if (j > i) {
       distances[`${i + 1},${j + 1}`] = distance(i, j);
-      distances2[`${i + 1},${j + 1}`] = distance3(i, j);
+      distances2[`${i + 1},${j + 1}`] = distance2(i, j);
     }
   }
 }
 
-printUniverse(universe, galaxies);
 const score1 = Object.values(distances).reduce((p, v) => p + v, 0);
 console.log("Part 1", score1);
 
+printUniverse(universe, galaxies);
 const score2 = Object.values(distances2).reduce((p, v) => p + v, 0);
 console.log("Part 2", score2);
