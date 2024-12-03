@@ -22,7 +22,6 @@ let prev = 0;
 
 while (true) {
   const pos = input.indexOf(search, prev);
-  console.log(pos);
   if (-1 === pos) {
     break;
   }
