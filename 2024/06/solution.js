@@ -2,7 +2,7 @@ const fs = require("fs");
 const path = require("path");
 
 const input = fs
-  .readFileSync(path.resolve(__dirname, "example.txt"), { encoding: "utf-8" })
+  .readFileSync(path.resolve(__dirname, "input.txt"), { encoding: "utf-8" })
   .split("\n")
   .map((r) => r.split(""));
 
@@ -93,7 +93,7 @@ console.log(step1);
 
 let bigOs = 0;
 
-seen.forEach(([i, j]) => {
+new Map(seen).forEach(([i, j]) => {
   // clear history
   history = new Map();
 
@@ -114,7 +114,6 @@ seen.forEach(([i, j]) => {
     exit = makeMove();
   }
   if ("loop" === exit) {
-    console.log(i, j);
     bigOs++;
   }
   map[j][i] = ".";
