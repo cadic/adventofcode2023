@@ -2,7 +2,7 @@ const fs = require("fs");
 const path = require("path");
 
 const input = fs
-  .readFileSync(path.resolve(__dirname, "input.txt"), { encoding: "utf-8" })
+  .readFileSync(path.resolve(__dirname, "example.txt"), { encoding: "utf-8" })
   .split("\n")
   .map((r) => r.split(""));
 
@@ -40,16 +40,14 @@ const findGuard = (map) => {
 };
 
 const makeMove = () => {
-  if (history) {
-    const newRecord = `${x}|${y}|${g}`;
-    if (history.includes(newRecord)) {
-      return "loop";
-    } else {
-      history.push(newRecord);
-    }
+  const newRecord = `${x}|${y}|${g}`;
+  if (history.has(newRecord)) {
+    return "loop";
+  } else {
+    history.set(newRecord);
   }
 
-  map[y][x] = p;
+  seen.set(`${x}|${y}`, [x, y]);
 
   let move = moves[g];
   let nX = x + move[0],
@@ -71,7 +69,6 @@ const makeMove = () => {
 
   x = nX;
   y = nY;
-  map[y][x] = g;
 
   return "success";
 };
@@ -81,53 +78,46 @@ const { x: startX, y: startY } = findGuard(map);
 let x = startX,
   y = startY;
 let g = startG;
-let history = false;
+let history = new Map();
 
 let exit = "success";
-history = [];
+let seen = new Map();
+
 while ("success" === exit) {
   exit = makeMove();
-  drawMap(map);
-  console.log("---");
 }
 
-const step1 = map.reduce((p, v) => {
-  return p + v.filter((e) => e === "X").length;
-}, 0);
+const step1 = seen.size;
 
 console.log(step1);
 
 let bigOs = 0;
 
-for (let i = 0; i < map.length; i++) {
-  for (let j = 0; j < map[0].length; j++) {
-    // clear history
-    history = [];
+seen.forEach(([i, j]) => {
+  // clear history
+  history = new Map();
 
-    // Initialize new map
-    x = startX;
-    y = startY;
-    g = startG;
-    map = JSON.parse(JSON.stringify(input));
+  // Initialize new map
+  x = startX;
+  y = startY;
+  g = startG;
+  // map = JSON.parse(JSON.stringify(input));
 
-    if (map[j][i] === o) {
-      // skip if already an obsticle
-      continue;
-    }
-    if (map[j][i] === g) {
-      // Guard position
-      continue;
-    }
-
-    map[j][i] = o;
-    exit = "success";
-    while ("success" === exit) {
-      exit = makeMove();
-    }
-    if ("loop" === exit) {
-      bigOs++;
-    }
+  if (map[j][i] === g) {
+    // Guard position
+    return;
   }
-}
+
+  map[j][i] = o;
+  exit = "success";
+  while ("success" === exit) {
+    exit = makeMove();
+  }
+  if ("loop" === exit) {
+    console.log(i, j);
+    bigOs++;
+  }
+  map[j][i] = ".";
+});
 
 console.log(bigOs);
