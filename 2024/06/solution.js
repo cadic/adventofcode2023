@@ -2,7 +2,7 @@ const fs = require("fs");
 const path = require("path");
 
 const input = fs
-  .readFileSync(path.resolve(__dirname, "input.txt"), { encoding: "utf-8" })
+  .readFileSync(path.resolve(__dirname, "example.txt"), { encoding: "utf-8" })
   .split("\n")
   .map((r) => r.split(""));
 
@@ -97,11 +97,9 @@ new Map(seen).forEach(([i, j]) => {
   // clear history
   history = new Map();
 
-  // Initialize new map
   x = startX;
   y = startY;
   g = startG;
-  // map = JSON.parse(JSON.stringify(input));
 
   if (map[j][i] === g) {
     // Guard position
